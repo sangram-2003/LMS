@@ -14,7 +14,8 @@ $sql = "SELECT
             email,
             department,
             phone,
-            date_of_birth
+            date_of_birth,
+            joinDate
         FROM students
         ORDER BY roll_number DESC";
 

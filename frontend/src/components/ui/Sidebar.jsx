@@ -8,15 +8,18 @@ function Sidebar2() {
   const [active, setActive] = useState("dashboard");
   const { isLoggedIn, loading } = useSelector(state => state.auth);
   const navigate = useNavigate();
- const handleLogout = () => {
-  dispatch(logout());
-  navigate("/");
+  const handleLogout = () => {
+  // 🔥 clear ALL stored data
+  localStorage.clear();
+
+  // 🔥 hard reload (VERY IMPORTANT)
+  window.location.href = "/login";
 };
 
 console.log(isLoggedIn)
 
   return (
-    <div className="w-64 h-screen relative border-r p-5 ">
+    <div className="w-64 h-screen flex flex-col relative border-r p-5 ">
       <div className="flex items-center gap-3 mb-8">
         <div className="bg-blue-400 text-white p-2 rounded-md">📚</div>
         <div>
@@ -93,16 +96,14 @@ console.log(isLoggedIn)
       </ul>
 
       {/* Logout Button */}
-      {isLoggedIn && (
-        <button
-          onClick={handleLogout}
-          disabled={loading}
-          className="absolute bottom-8 bg-pink-500 w-10/12 py-2 rounded-md cursor-pointer text-md font-semibold text-center"
-        >
-          {loading ? "Logging out..." : "Logout"}
-        </button>
-      )}
+      <button
+        onClick={handleLogout}
+        className="mt-auto bg-red-500 text-white p-3 rounded-md hover:bg-red-600"
+      >
+        🚪 Logout
+      </button>
     </div>
+    
   );
 }
 

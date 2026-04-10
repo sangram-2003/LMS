@@ -72,7 +72,7 @@ function Members() {
     name: student.name,
     email: student.email,
     department: student.department,
-    joinDate: student.joinDate || student.created_at || "—",
+    joinDate: student.joinDate.split(" ")[0] || "—",
     stats: {
       total: totalRequests,
       pending: totalPending,
@@ -90,7 +90,7 @@ function Members() {
   const filteredStudent = studentsSummary.filter((student) =>
     student.name.toLowerCase().includes(searchItem.toLowerCase())
   );
-
+console.log(filteredStudent)
   return (
     <div className="flex min-h-screen bg-gray-50 text-slate-700">
       <main className="flex-1 p-6 md:p-10">
