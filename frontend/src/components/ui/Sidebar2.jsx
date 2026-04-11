@@ -13,7 +13,7 @@ function Sidebar2() {
 };
 
   const menuClass = ({ isActive }) =>
-    `flex items-center gap-3 p-3 rounded-md hover:bg-blue-100 cursor-pointer ${
+    `flex items-center bg-red-200 gap-3 p-3 rounded-md hover:bg-blue-100 cursor-pointer ${
       isActive ? "bg-blue-100 font-semibold" : ""
     }`;
 
