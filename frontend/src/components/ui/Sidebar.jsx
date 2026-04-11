@@ -19,7 +19,7 @@ function Sidebar2() {
 console.log(isLoggedIn)
 
   return (
-    <div className="w-64 h-screen flex flex-col relative border-r p-5 ">
+    <div className="w-64  h-screen flex flex-col relative border-r p-5 ">
       <div className="flex items-center gap-3 mb-8">
         <div className="bg-blue-400 text-white p-2 rounded-md">📚</div>
         <div>

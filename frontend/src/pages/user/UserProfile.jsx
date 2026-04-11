@@ -78,7 +78,7 @@ const handleChangePassword = async () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6 flex justify-center items-center">
+    <div className="min-h-screen bg-gray-100 p-3 md:p-6 flex justify-center mt-10 md:mt-0 md:items-center">
       
       <div className="bg-white shadow-xl rounded-2xl w-full max-w-3xl p-8">
 
