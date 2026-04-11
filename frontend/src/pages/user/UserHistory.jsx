@@ -63,12 +63,12 @@ export default function UserHistory() {
   const returned = history.filter((b) => getStatus(b) === "returned").length;
 
   return (
-    <div className="p-8 bg-slate-50 min-h-screen text-slate-800">
+    <div className=" p-4 md:p-8 bg-slate-50 min-h-screen text-slate-800">
 
       <h1 className="text-2xl font-bold mb-6"> History</h1>
 
       {/* 🔍 SEARCH + FILTER */}
-      <div className="flex justify-between mb-6">
+      <div className="flex justify-between mb-6 gap-2">
         <input
           type="text"
           placeholder="Search your history..."
@@ -80,7 +80,7 @@ export default function UserHistory() {
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="border rounded-lg px-4 py-2 bg-white text-sm"
+          className="border rounded-lg md:px-4 py-2 bg-white text-sm"
         >
           <option value="All">All</option>
           <option value="pending">Pending</option>
@@ -90,18 +90,18 @@ export default function UserHistory() {
       </div>
 
       {/*  STATS */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
-        <div className="bg-white p-6 rounded-xl text-center shadow">
+      <div className="grid grid-cols-3 w-full  gap-4 mb-8">
+        <div className="bg-white col-span-3 md:col-span-1 p-6 rounded-xl text-center shadow">
           <div className="text-2xl font-bold">{pending}</div>
           <div className="text-gray-400">Pending</div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl text-center shadow">
+        <div className="bg-white p-6 col-span-3 md:col-span-1 rounded-xl text-center shadow">
           <div className="text-2xl font-bold">{active}</div>
           <div className="text-gray-400">Issued</div>
         </div>
 
-        <div className="bg-white p-6 rounded-xl text-center shadow">
+        <div className="bg-white p-6  col-span-3 md:col-span-1 rounded-xl text-center shadow">
           <div className="text-2xl font-bold">{returned}</div>
           <div className="text-gray-400">Returned</div>
         </div>
