@@ -1,0 +1,225 @@
+[
+  {
+    "query": "i want to learn python programming",
+    "expected_isbn": ["ISBN011"],
+    "expected_titles": ["Python Programming"]
+  },
+  {
+    "query": "python coding for beginners",
+    "expected_isbn": ["ISBN011"],
+    "expected_titles": ["Python Programming"]
+  },
+  {
+    "query": "java programming concepts",
+    "expected_isbn": ["ISBN012"],
+    "expected_titles": ["Java Programming"]
+  },
+  {
+    "query": "learn full stack web development react node",
+    "expected_isbn": ["ISBN013"],
+    "expected_titles": ["Web Development with MERN"]
+  },
+  {
+    "query": "mern stack project tutorial",
+    "expected_isbn": ["ISBN013"],
+    "expected_titles": ["Web Development with MERN"]
+  },
+  {
+    "query": "data structures using c++",
+    "expected_isbn": ["ISBN003"],
+    "expected_titles": ["Data Structures in C++"]
+  },
+  {
+    "query": "linked list stack queue trees c++",
+    "expected_isbn": ["ISBN003"],
+    "expected_titles": ["Data Structures in C++"]
+  },
+  {
+    "query": "operating system memory management process",
+    "expected_isbn": ["ISBN004"],
+    "expected_titles": ["Operating System Concepts"]
+  },
+  {
+    "query": "dbms sql normalization transaction",
+    "expected_isbn": ["ISBN005"],
+    "expected_titles": ["Database Management Systems"]
+  },
+  {
+    "query": "database management system tutorial",
+    "expected_isbn": ["ISBN005"],
+    "expected_titles": ["Database Management Systems"]
+  },
+  {
+    "query": "artificial intelligence basics for beginners",
+    "expected_isbn": ["ISBN006"],
+    "expected_titles": ["Artificial Intelligence Basics"]
+  },
+  {
+    "query": "machine learning algorithms introduction",
+    "expected_isbn": ["ISBN015"],
+    "expected_titles": ["Machine Learning"]
+  },
+  {
+    "query": "deep learning neural networks cnn rnn",
+    "expected_isbn": ["ISBN007"],
+    "expected_titles": ["Deep Learning"]
+  },
+  {
+    "query": "computer networks osi tcp ip internet",
+    "expected_isbn": ["ISBN008"],
+    "expected_titles": ["Computer Networks"]
+  },
+  {
+    "query": "networking protocols and architecture",
+    "expected_isbn": ["ISBN008"],
+    "expected_titles": ["Computer Networks"]
+  },
+  {
+    "query": "theory of computation automata turing machine",
+    "expected_isbn": ["ISBN009"],
+    "expected_titles": ["Theory of Computation"]
+  },
+  {
+    "query": "digital electronics logic gates flip flops",
+    "expected_isbn": ["ISBN010"],
+    "expected_titles": ["Digital Electronics"]
+  },
+  {
+    "query": "software engineering sdlc design patterns",
+    "expected_isbn": ["ISBN014"],
+    "expected_titles": ["Software Engineering"]
+  },
+  {
+    "query": "cloud computing aws virtualization distributed system",
+    "expected_isbn": ["ISBN016"],
+    "expected_titles": ["Cloud Computing"]
+  },
+  {
+    "query": "cyber security hacking encryption basics",
+    "expected_isbn": ["ISBN017"],
+    "expected_titles": ["Cyber Security Basics"]
+  },
+  {
+    "query": "blockchain bitcoin crypto technology",
+    "expected_isbn": ["ISBN018"],
+    "expected_titles": ["Blockchain Technology"]
+  },
+  {
+    "query": "internet of things iot sensors smart devices",
+    "expected_isbn": ["ISBN019"],
+    "expected_titles": ["Internet of Things"]
+  },
+  {
+    "query": "linear algebra matrices eigenvalues vectors",
+    "expected_isbn": ["ISBN020"],
+    "expected_titles": ["Linear Algebra"]
+  },
+  {
+    "query": "engineering mechanics statics dynamics physics",
+    "expected_isbn": ["ISBN002"],
+    "expected_titles": ["Engineering Mechanics"]
+  },
+  {
+    "query": "strength of materials stress strain bending",
+    "expected_isbn": ["ISBN001"],
+    "expected_titles": ["Strength of Materials"]
+  }
+  ,
+  
+  {
+    "query": "i want to learn python and machine learning together",
+    "expected_isbn": ["ISBN011", "ISBN015"],
+    "expected_titles": ["Python Programming", "Machine Learning"]
+  },
+  {
+    "query": "ai and deep learning basics for beginners",
+    "expected_isbn": ["ISBN006", "ISBN007"],
+    "expected_titles": ["Artificial Intelligence Basics", "Deep Learning"]
+  },
+  {
+    "query": "web development and backend programming with node and python",
+    "expected_isbn": ["ISBN013", "ISBN011"],
+    "expected_titles": ["Web Development with MERN", "Python Programming"]
+  },
+  {
+    "query": "data structures and algorithms with c++ and java",
+    "expected_isbn": ["ISBN003", "ISBN012"],
+    "expected_titles": ["Data Structures in C++", "Java Programming"]
+  },
+  {
+    "query": "operating system and computer networks concepts",
+    "expected_isbn": ["ISBN004", "ISBN008"],
+    "expected_titles": ["Operating System Concepts", "Computer Networks"]
+  },
+  {
+    "query": "dbms and sql for backend development",
+    "expected_isbn": ["ISBN005", "ISBN013"],
+    "expected_titles": ["Database Management Systems", "Web Development with MERN"]
+  },
+  {
+    "query": "cyber security and blockchain technology basics",
+    "expected_isbn": ["ISBN017", "ISBN018"],
+    "expected_titles": ["Cyber Security Basics", "Blockchain Technology"]
+  },
+  {
+    "query": "iot and cloud computing architecture",
+    "expected_isbn": ["ISBN019", "ISBN016"],
+    "expected_titles": ["Internet of Things", "Cloud Computing"]
+  },
+  {
+    "query": "machine learning and linear algebra mathematics",
+    "expected_isbn": ["ISBN015", "ISBN020"],
+    "expected_titles": ["Machine Learning", "Linear Algebra"]
+  },
+  {
+    "query": "digital electronics and engineering mechanics basics",
+    "expected_isbn": ["ISBN010", "ISBN002"],
+    "expected_titles": ["Digital Electronics", "Engineering Mechanics"]
+  },
+  {
+    "query": "software engineering and project design with sdlc",
+    "expected_isbn": ["ISBN014"],
+    "expected_titles": ["Software Engineering"]
+  },
+  {
+    "query": "learn programming from python to java and web development",
+    "expected_isbn": ["ISBN011", "ISBN012", "ISBN013"],
+    "expected_titles": ["Python Programming", "Java Programming", "Web Development with MERN"]
+  },
+  {
+    "query": "ai machine learning and deep learning complete guide",
+    "expected_isbn": ["ISBN006", "ISBN015", "ISBN007"],
+    "expected_titles": ["Artificial Intelligence Basics", "Machine Learning", "Deep Learning"]
+  },
+  {
+    "query": "computer science subjects os dbms cn toc",
+    "expected_isbn": ["ISBN004", "ISBN005", "ISBN008", "ISBN009"],
+    "expected_titles": ["Operating System Concepts", "Database Management Systems", "Computer Networks", "Theory of Computation"]
+  },
+  {
+    "query": "engineering subjects mechanics and strength of materials",
+    "expected_isbn": ["ISBN002", "ISBN001"],
+    "expected_titles": ["Engineering Mechanics", "Strength of Materials"]
+  },
+  {
+    "query": "full stack development with ai integration",
+    "expected_isbn": ["ISBN013", "ISBN006"],
+    "expected_titles": ["Web Development with MERN", "Artificial Intelligence Basics"]
+  },
+  {
+    "query": "python for ai machine learning and data science",
+    "expected_isbn": ["ISBN011", "ISBN015", "ISBN006"],
+    "expected_titles": ["Python Programming", "Machine Learning", "Artificial Intelligence Basics"]
+  },
+  {
+    "query": "advanced computer science topics networks os dbms ai",
+    "expected_isbn": ["ISBN004", "ISBN005", "ISBN008", "ISBN006"],
+    "expected_titles": ["Operating System Concepts", "Database Management Systems", "Computer Networks", "Artificial Intelligence Basics"]
+  },
+  {
+    "query": "blockchain iot and cyber security future technologies",
+    "expected_isbn": ["ISBN018", "ISBN019", "ISBN017"],
+    "expected_titles": ["Blockchain Technology", "Internet of Things", "Cyber Security Basics"]
+  }
+
+]
