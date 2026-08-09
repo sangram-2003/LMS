@@ -46,7 +46,7 @@ function AddMember() {
 
   return (
     <>
-      <div className="w-full h-screen flex justify-center items-center relative">
+      <div className="w-full h-screen flex justify-center items-center relative p-1">
 
         {/* ✅ POPUP */}
         {message && (
