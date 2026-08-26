@@ -2,7 +2,7 @@ import numpy as np
 from core.embedding import get_embedding
 
 # ==============================
-# 🧠 NLTK SETUP
+# NLTK SETUP
 # ==============================
 import nltk
 from nltk.stem import WordNetLemmatizer
@@ -19,7 +19,7 @@ stop_words = set(stopwords.words('english'))
 
 
 # ==============================
-# 🧠 POS TAG HELPER (Better Lemma)
+#  POS TAG HELPER (Better Lemma)
 # ==============================
 def get_pos(word):
     tag = nltk.pos_tag([word])[0][1][0].upper()
@@ -33,7 +33,7 @@ def get_pos(word):
 
 
 # ==============================
-# 🧠 PREPROCESS FUNCTION
+#  PREPROCESS FUNCTION
 # ==============================
 def preprocess(text):
     words = text.lower().split()
@@ -48,7 +48,7 @@ def preprocess(text):
 
 
 # ==============================
-# 🔍 KEYWORD SCORE + DEBUG
+# KEYWORD SCORE + DEBUG
 # ==============================
 def keyword_score(query, doc_text):
     query_words = preprocess(query)
@@ -106,16 +106,16 @@ def keyword_score(query, doc_text):
 
 
 # ==============================
-# 🔎 SEARCH FUNCTION
+#  SEARCH FUNCTION
 # ==============================
 def search(query, index, docs, k=5):
     print("\n==============================")
-    print("🔍 SEARCH QUERY:", query)
+    print(" SEARCH QUERY:", query)
     print("==============================")
 
     emb = get_embedding(query)
     if emb is None:
-        print("❌ Embedding failed")
+        print(" Embedding failed")
         return [], []
 
     q = np.array([emb]).astype("float32")
@@ -137,7 +137,7 @@ def search(query, index, docs, k=5):
             print("ISBN:", isbn)
 
             # =========================
-            # 🔥 SCORING
+            #  SCORING
             # =========================
             vector_score = 1 / (1 + D[0][rank])
 
@@ -146,34 +146,34 @@ def search(query, index, docs, k=5):
             final_score = (0.7 * vector_score) + (0.3 * kw_score)
 
             # =========================
-            # 🧠 DEBUG OUTPUT
+            #  DEBUG OUTPUT
             # =========================
-            print("\n🧠 NLP DEBUG")
+            print("\n NLP DEBUG")
 
             print("Processed Query:", processed_query)
 
             print("\nMatched Words:")
             if matched:
                 for m in matched:
-                    print(f"   ✅ {m['word']} → {m['matched_in']}")
+                    print(f"    {m['word']} → {m['matched_in']}")
             else:
-                print("   ❌ No matches")
+                print("    No matches")
 
             print("\nUnmatched Words:")
             if not_matched:
                 for nm in not_matched:
-                    print(f"   ❌ {nm}")
+                    print(f"    {nm}")
             else:
-                print("   ✅ All words matched")
+                print("    All words matched")
 
-            # 📊 Match Ratio
+            #  Match Ratio
             total_words = len(processed_query)
             match_count = len(matched)
 
-            print(f"\n📊 Match Ratio: {match_count}/{total_words}")
+            print(f"\n Match Ratio: {match_count}/{total_words}")
 
-            # 📈 Scores
-            print("\n📈 Scores")
+            #  Scores
+            print("\n Scores")
             print("Vector Score:", round(vector_score, 4))
             print("Keyword Score:", round(kw_score, 4))
             print("Final Score:", round(final_score, 4))
@@ -181,11 +181,11 @@ def search(query, index, docs, k=5):
             results.append((final_score, doc_obj))
 
     # =========================
-    # 🏆 SORT RESULTS
+    #  SORT RESULTS
     # =========================
     results.sort(key=lambda x: x[0], reverse=True)
 
-    print("\n🏆 TOP RESULTS AFTER SORTING")
+    print("\n TOP RESULTS AFTER SORTING")
 
     top_docs = [doc for score, doc in results[:3]]
 
@@ -193,10 +193,10 @@ def search(query, index, docs, k=5):
     context_docs = [doc.get("text", "") for doc in top_docs]
 
     for i, doc in enumerate(top_docs):
-        print(f"\n📗 Final Result {i+1}")
+        print(f"\n Final Result {i+1}")
         print("Title:", doc.get("title"))
         print("ISBN:", doc.get("isbn"))
 
-    print("\n📦 FINAL ISBN LIST:", isbn_list)
+    print("\n FINAL ISBN LIST:", isbn_list)
 
     return context_docs, isbn_list

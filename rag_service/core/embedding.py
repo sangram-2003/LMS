@@ -1,19 +1,14 @@
 import requests
 
-
-# ==========================
-# Configuration
-# ==========================
-
 OLLAMA_URL = "http://localhost:11434/api/embeddings"
 
-MODEL = "nomic-embed-text"
+MODEL = "nomic-embed-text-v2-moe"
 
 
 
-# ==========================
+
 # Generate Embedding
-# ==========================
+
 
 def get_embedding(text):
 
@@ -54,7 +49,7 @@ def get_embedding(text):
         if embedding is None:
 
             print(
-                "❌ No embedding returned"
+                " No embedding returned"
             )
 
             return None
@@ -68,7 +63,7 @@ def get_embedding(text):
     except requests.exceptions.Timeout:
 
         print(
-            "❌ Embedding timeout"
+            " Embedding timeout"
         )
 
         return None
@@ -78,7 +73,7 @@ def get_embedding(text):
     except requests.exceptions.ConnectionError:
 
         print(
-            "❌ Cannot connect to Ollama"
+            " Cannot connect to Ollama"
         )
 
         return None
@@ -88,8 +83,8 @@ def get_embedding(text):
     except Exception as e:
 
         print(
-            "❌ Embedding Exception:",
-            e
+            " Embedding Exception:",
+            
         )
 
         return None

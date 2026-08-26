@@ -18,15 +18,15 @@ def build_user_query(activity):
 
 def recommend(activity, index, docs, k=5):
     print("\n==============================")
-    print("🤖 RECOMMENDATION MODE")
+    print(" RECOMMENDATION MODE")
     print("==============================")
 
     query = build_user_query(activity)
-    print("🧠 Generated Query:", query)
+    print(" Generated Query:", query)
 
     emb = get_embedding(query)
     if emb is None:
-        print("❌ Embedding failed")
+        print("Embedding failed")
         return []
 
     q = np.array([emb]).astype("float32")
