@@ -3,8 +3,27 @@ import numpy as np
 from core.embedding import get_embedding
 
 
-SIMILARITY_THRESHOLD = 0.0450
+SIMILARITY_THRESHOLD = 0.0400
 
+
+# ==========================
+# STOPWORDS
+# ==========================
+
+STOPWORDS = {
+    "a", "an", "the",
+    "and", "or", "but",
+    "is", "are", "was", "were",
+    "to", "of", "in", "on", "for",
+    "with", "from", "by",
+    "me", "give", "show",
+    "find", "book", "books","some"
+}
+
+
+# ==========================
+# SAFE LOWER
+# ==========================
 
 def safe_lower(value):
     """
@@ -19,8 +38,26 @@ def safe_lower(value):
 
 
 
-# KEYWORD SCORE
+# QUERY WORDS
 
+
+def get_query_words(query):
+
+    query = safe_lower(query)
+
+    words = query.split()
+
+    words = [
+        word
+        for word in words
+        if word not in STOPWORDS
+    ]
+
+    return set(words)
+
+
+
+# Keyword Score
 
 def keyword_score(query, book):
 
@@ -53,19 +90,30 @@ def keyword_score(query, book):
         book.get("isbn")
     )
 
-    query_words = set(query.split())
+    # ==========================
+    # CLEAN QUERY
+    # ==========================
+
+    query_words = get_query_words(query)
 
     if not query_words:
         return 0
 
+    # Convert fields into complete words
+    title_words = set(title.split())
+    author_words = set(author.split())
+    genre_words = set(genre.split())
+    description_words = set(description.split())
+    keyword_words = set(keywords.split())
+
     score = 0
 
-  #Tittle
+    # ==========================
+    # TITLE
+    # ==========================
 
-    title_matches = sum(
-        1
-        for word in query_words
-        if word in title
+    title_matches = len(
+        query_words & title_words
     )
 
     if title_matches > 0:
@@ -76,14 +124,12 @@ def keyword_score(query, book):
             title_matches / len(query_words)
         ) * 1.0
 
-    
+   
     # AUTHOR
     
 
-    author_matches = sum(
-        1
-        for word in query_words
-        if word in author
+    author_matches = len(
+        query_words & author_words
     )
 
     if author_matches > 0:
@@ -94,14 +140,12 @@ def keyword_score(query, book):
             author_matches / len(query_words)
         ) * 0.8
 
-    
+   
     # KEYWORDS
-    
+   
 
-    keyword_matches = sum(
-        1
-        for word in query_words
-        if word in keywords
+    keyword_matches = len(
+        query_words & keyword_words
     )
 
     if keyword_matches > 0:
@@ -114,17 +158,15 @@ def keyword_score(query, book):
 
     
     # DESCRIPTION
-    
+   
 
-    description_matches = sum(
-        1
-        for word in query_words
-        if word in description
+    description_matches = len(
+        query_words & description_words
     )
 
     if description_matches > 0:
 
-        print("✅ Query words → description")
+        print(" Query words → description")
 
         score += (
             description_matches / len(query_words)
@@ -134,10 +176,8 @@ def keyword_score(query, book):
     # GENRE
     
 
-    genre_matches = sum(
-        1
-        for word in query_words
-        if word in genre
+    genre_matches = len(
+        query_words & genre_words
     )
 
     if genre_matches > 0:
@@ -158,7 +198,9 @@ def keyword_score(query, book):
 
         score += 1.5
 
-#    {NORMALIZE}
+   
+    # NORMALIZE
+    
 
     max_score = 5.0
 
@@ -213,9 +255,9 @@ def search(query, index, docs, k=15):
 
         return [], []
 
-    # ======================
+   
     # EMBEDDING
-    # ======================
+    
 
     embedding = get_embedding(
         query
@@ -235,9 +277,9 @@ def search(query, index, docs, k=15):
         "float32"
     )
 
-   
-    # FAISS SEARCH
     
+    # FAISS SEARCH
+   
 
     distances, indexes = index.search(
         vector,
@@ -251,9 +293,9 @@ def search(query, index, docs, k=15):
 
     results = []
 
-    
+    # ==========================
     # HYBRID RANKING
-   
+    # ==========================
 
     for rank, idx in enumerate(indexes[0]):
 
@@ -270,9 +312,9 @@ def search(query, index, docs, k=15):
             book.get("title")
         )
 
-        
+        # ==========================
         # VECTOR SCORE
-       
+        # ==========================
 
         vector_score = 1 / (
             1 + float(distances[0][rank])
@@ -283,9 +325,9 @@ def search(query, index, docs, k=15):
             vector_score
         )
 
-        
+        # ==========================
         # KEYWORD SCORE
-        
+        # ==========================
 
         kw_score = keyword_score(
             query,
@@ -297,9 +339,9 @@ def search(query, index, docs, k=15):
             kw_score
         )
 
-        
+        # ==========================
         # HYBRID FINAL SCORE
-       
+        # ==========================
 
         final_score = (
 
@@ -316,9 +358,9 @@ def search(query, index, docs, k=15):
             final_score
         )
 
-        
+        # ==========================
         # THRESHOLD
-        
+        # ==========================
 
         if final_score < SIMILARITY_THRESHOLD:
 
@@ -343,18 +385,18 @@ def search(query, index, docs, k=15):
 
         )
 
-    
+    # ==========================
     # SORT
-    
+    # ==========================
 
     results.sort(
         key=lambda x: x[0],
         reverse=True
     )
 
-    
+    # ==========================
     # FINAL TOP-5 RESULTS
-    
+    # ==========================
 
     print("\n FINAL RESULTS")
 
@@ -366,9 +408,9 @@ def search(query, index, docs, k=15):
             score
         )
 
-    
+    # ==========================
     # RETURN TOP-5 CONTEXT
-    
+    # ==========================
 
     top_docs = [
 
