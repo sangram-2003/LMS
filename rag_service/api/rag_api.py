@@ -10,9 +10,9 @@ from core.recommend import recommend
 
 app = FastAPI()
 
-# =========================
+
 # CORS
-# =========================
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -21,16 +21,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# =========================
+
 # LOAD VECTOR DB
-# =========================
+
 index, docs = load_db()
 print("✅ Docs loaded successfully")
 
 
-# =========================
+
 # MODELS
-# =========================
+
 class Query(BaseModel):
     query: str
 
@@ -39,9 +39,9 @@ class RecommendRequest(BaseModel):
     roll_number: str
 
 
-# =========================
+
 # DB FUNCTION
-# =========================
+
 def get_user_activity(roll_number):
     conn = mysql.connector.connect(
         host="localhost",
@@ -69,9 +69,8 @@ def get_user_activity(roll_number):
     return data
 
 
-# =========================
-# 🤖 CHATBOT API
-# =========================
+# CHATBOT API
+
 @app.post("/ask")
 def ask(q: Query):
 
@@ -104,7 +103,7 @@ def ask(q: Query):
         }
 
     except Exception as e:
-        print("❌ ERROR in /ask")
+        print(" ERROR in /ask")
         print(type(e).__name__)
         print(str(e))
 
@@ -114,9 +113,9 @@ def ask(q: Query):
         }
 
 
-# =========================
-# 🎯 RECOMMENDATION API
-# =========================
+
+# RECOMMENDATION API
+
 @app.post("/recommend")
 def recommend_books(req: RecommendRequest):
 

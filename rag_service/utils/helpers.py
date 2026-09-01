@@ -2,8 +2,8 @@ import pickle
 import faiss
 import os
 
-
-DATA_PATH = "rag_service/data"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_PATH = os.path.join(BASE_DIR, "data")
 
 
 

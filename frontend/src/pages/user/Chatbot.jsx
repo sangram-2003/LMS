@@ -1,7 +1,7 @@
-
 import React, { useState } from "react";
 import axios from "axios";
 import { RiSendPlaneFill } from "react-icons/ri";
+
 const Chatbot = () => {
   const [query, setQuery] = useState("");
   const [messages, setMessages] = useState([]);
@@ -12,11 +12,9 @@ const Chatbot = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const rollNumber = user?.roll_number;
 
-
- 
-
-
+  // =========================
   // REQUEST BOOK
+  // =========================
 
   const handleAdd = async (book) => {
     if (!rollNumber) {
@@ -45,21 +43,28 @@ const Chatbot = () => {
     } catch (err) {
       console.error("❌ Request failed:", err);
       alert("❌ Request failed");
+    } finally {
+      setRequestLoading(null);
     }
-
-    setRequestLoading(null);
   };
 
-
-  //  Fetch books
+  // =========================
+  // FETCH BOOKS
+  // =========================
 
   const fetchBooks = async (isbnList) => {
     console.log("📡 Fetching books for:", isbnList);
 
+    if (!isbnList || isbnList.length === 0) {
+      return [];
+    }
+
     try {
       const promises = isbnList.map((isbn) =>
         fetch(
-          `http://localhost/LMS/Api/books/getBookByIsbn.php?isbn=${isbn}`
+          `http://localhost/LMS/Api/books/getBookByIsbn.php?isbn=${encodeURIComponent(
+            isbn
+          )}`
         ).then((res) => res.json())
       );
 
@@ -68,7 +73,7 @@ const Chatbot = () => {
       console.log("📡 Raw API results:", results);
 
       const books = results
-        .filter((r) => r.success)
+        .filter((r) => r.success && r.data)
         .map((r) => ({
           ...r.data,
           available: Number(r.data.available),
@@ -78,18 +83,30 @@ const Chatbot = () => {
 
       return books;
     } catch (err) {
-      console.log("❌ Fetch error", err);
+      console.error("❌ Fetch error:", err);
       return [];
     }
   };
 
-
+  // =========================
   // SEND QUERY
+  // =========================
 
   const sendQuery = async () => {
-    if (!query.trim()) return;
+    if (!query.trim() || loading) return;
 
-    setMessages((prev) => [...prev, { type: "user", text: query }]);
+    const currentQuery = query.trim();
+
+    // Add user message
+    setMessages((prev) => [
+      ...prev,
+      {
+        type: "user",
+        text: currentQuery,
+      },
+    ]);
+
+    setQuery("");
     setLoading(true);
 
     try {
@@ -98,24 +115,68 @@ const Chatbot = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ query }),
+        body: JSON.stringify({
+          query: currentQuery,
+        }),
       });
+
+      if (!res.ok) {
+        throw new Error(`HTTP error: ${res.status}`);
+      }
 
       const data = await res.json();
 
       console.log("🧠 API RESPONSE:", data);
 
-      const matchedISBN = data.isbn || [];
+      const cleanAnswer = (data.answer || "").trim();
 
-      const cleanAnswer = data.answer || "";
+      // =========================
+      // NO RELEVANT BOOK
+      // =========================
 
-      const books = await fetchBooks(matchedISBN);
+      if (
+        cleanAnswer.toLowerCase() === "no relevant book found." ||
+        cleanAnswer.toLowerCase() === "no relevant book found"
+      ) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            type: "bot",
+            text: "No relevant book found.",
+            books: [],
+          },
+        ]);
+
+        return;
+      }
+
+      // =========================
+      // GET ISBNs
+      // =========================
+
+      const matchedISBN = Array.isArray(data.isbn) ? data.isbn : [];
+
+      console.log("📚 Matched ISBN:", matchedISBN);
+
+      // =========================
+      // FETCH ONLY RETURNED BOOKS
+      // =========================
+
+      let books = [];
+
+      if (matchedISBN.length > 0) {
+        books = await fetchBooks(matchedISBN);
+      }
+
+      // =========================
+      // FINAL BOT MESSAGE
+      // =========================
 
       setMessages((prev) => [
         ...prev,
         {
           type: "bot",
-          text: cleanAnswer,
+          text: cleanAnswer || "Relevant books found.",
           books: books,
         },
       ]);
@@ -124,21 +185,24 @@ const Chatbot = () => {
 
       setMessages((prev) => [
         ...prev,
-        { type: "bot", text: "❌ Error connecting to server" },
+        {
+          type: "bot",
+          text: "❌ Error connecting to server",
+          books: [],
+        },
       ]);
+    } finally {
+      setLoading(false);
     }
-
-    setQuery("");
-    setLoading(false);
   };
 
-
   return (
-    <div className="flex flex-col h-full  ">
-      <div className="flex-1 p-4  space-y-3 bg-white overflow-y-auto ">
+    <div className="flex flex-col h-full">
+      {/* CHAT AREA */}
+      <div className="flex-1 p-4 space-y-3 bg-white overflow-y-auto">
         {messages.length === 0 && (
           <p className="text-gray-500 text-center">
-           ASK SOME THINGS ABOUT BOOK
+            ASK SOME THINGS ABOUT BOOK
           </p>
         )}
 
@@ -151,23 +215,30 @@ const Chatbot = () => {
                 : "bg-gray-100 text-black"
             }`}
           >
-            {/* 💬 TEXT */}
+            {/* TEXT */}
             <p className="whitespace-pre-line">{msg.text}</p>
 
-            {/* 📚 BOOKS */}
-            {msg.books && msg.books.length > 0 ? (
+            {/* BOOK CARDS */}
+            {msg.type === "bot" && msg.books && msg.books.length > 0 ? (
               <div className="mt-3 space-y-2">
                 {msg.books.map((book) => (
                   <div
                     key={book.isbn}
                     className="border p-3 rounded shadow bg-white"
                   >
-                    <p className="font-bold">{book.title}</p>
-                    <p className="text-sm">👤 {book.author}</p>
+                    <p className="font-bold text-black">
+                      {book.title}
+                    </p>
+
+                    <p className="text-sm text-black">
+                      👤 {book.author}
+                    </p>
+
                     <p className="text-xs text-gray-500">
                       ISBN: {book.isbn}
                     </p>
-                    <p className="text-xs">
+
+                    <p className="text-xs text-black">
                       📦 Available: {book.available}
                     </p>
 
@@ -194,31 +265,42 @@ const Chatbot = () => {
                   </div>
                 ))}
               </div>
-            ) : msg.type === "bot" ? (
-              <p className="text-sm  text-gray-500 mt-2">
+            ) : msg.type === "bot" &&
+              msg.text !== "No relevant book found." ? (
+              <p className="text-sm text-gray-500 mt-2">
                 ⚠️ No books found
               </p>
             ) : null}
           </div>
         ))}
 
-        {loading && <p className="text-black">⏳ Thinking...</p>}
+        {loading && (
+          <p className="text-black">
+            ⏳ Thinking...
+          </p>
+        )}
       </div>
 
       {/* INPUT */}
-      <div className="flex gap-2 p-1  bg-gray-600/30 rounded-4xl">
+      <div className="flex gap-2 p-1 bg-gray-600/30 rounded-4xl">
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="flex-1 text-black border outline-none border-none focus:border-none p-3 rounded-3xl"
+          className="flex-1 text-black border-none outline-none p-3 rounded-3xl"
           placeholder="Ask about books..."
-          onKeyDown={(e) => e.key === "Enter" && sendQuery()}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              sendQuery();
+            }
+          }}
         />
+
         <button
           onClick={sendQuery}
-          className="bg-green-600/50 text-black flex justify-center items-center text-2xl px-3 mr-1 rounded-4xl"
+          disabled={loading}
+          className="bg-green-600/50 text-black flex justify-center items-center text-2xl px-3 mr-1 rounded-4xl disabled:opacity-50"
         >
-          <RiSendPlaneFill className="mt-1 text-green-1000 "/>
+          <RiSendPlaneFill className="mt-1 text-green-1000" />
         </button>
       </div>
     </div>
